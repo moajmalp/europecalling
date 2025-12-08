@@ -1,98 +1,102 @@
 import { useState, useEffect } from 'react';
-import { X, CheckCircle } from 'lucide-react';
+import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const LeadPopup = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            // Build logic to only show once per session or always after 15s? 
-            // For demo, show after 15s always if not submitted
-            const hasSeen = sessionStorage.getItem('hasSeenPopup');
-            if (!hasSeen) {
-                setIsOpen(true);
-                sessionStorage.setItem('hasSeenPopup', 'true');
-            }
-        }, 15000); // 15 seconds
+            setIsOpen(true);
+        }, 10000); // Show after 10 seconds
 
         return () => clearTimeout(timer);
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        // Logic to send data
-        setTimeout(() => {
-            setIsOpen(false);
-        }, 2000);
+        // Handle form submission
+        setIsOpen(false);
     };
-
-    if (!isOpen) return null;
 
     return (
         <AnimatePresence>
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-            >
-                <motion.div
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: 50, opacity: 0 }}
-                    className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden relative"
-                >
-                    <button
+            {isOpen && (
+                <>
+                    {/* Premium Backdrop */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         onClick={() => setIsOpen(false)}
-                        className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 transition-colors"
+                        className="fixed inset-0 bg-black/70 backdrop-blur-md z-50"
+                    />
+
+                    {/* Premium Popup */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        transition={{ type: "spring", duration: 0.5 }}
+                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md mx-4"
                     >
-                        <X className="h-6 w-6" />
-                    </button>
+                        <div className="bg-cream dark:bg-slate-900 rounded-3xl shadow-2xl premium-shadow dark:premium-shadow-dark p-10 relative border-2 border-slate-300 dark:border-slate-700">
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className="absolute top-5 right-5 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 transition-colors p-2 hover:bg-white/50 dark:hover:bg-slate-800 rounded-full"
+                                aria-label="Close popup"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
 
-                    <div className="bg-primary-DEFAULT p-6 text-center">
-                        <h3 className="text-2xl font-serif font-bold text-white mb-2">Get Your Free Consultation</h3>
-                        <p className="text-white/80 text-sm">Expert guidance for your European dream career.</p>
-                    </div>
+                            <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">
+                                Start Your European Journey
+                            </h3>
+                            <p className="text-slate-700 dark:text-slate-300 mb-8 leading-relaxed">
+                                Get a free consultation and personalized roadmap to your dream job in Europe.
+                            </p>
 
-                    <div className="p-8">
-                        {submitted ? (
-                            <div className="text-center py-8">
-                                <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                                <h4 className="text-xl font-bold text-primary-DEFAULT mb-2">Thank You!</h4>
-                                <p className="text-neutral-600">Our expert will contact you shortly.</p>
-                            </div>
-                        ) : (
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <input type="text" required placeholder="Full Name" className="w-full px-4 py-3 rounded-lg border border-neutral-200 focus:border-secondary outline-none transition-colors" />
-                                </div>
-                                <div>
-                                    <input type="email" required placeholder="Email Address" className="w-full px-4 py-3 rounded-lg border border-neutral-200 focus:border-secondary outline-none transition-colors" />
-                                </div>
-                                <div>
-                                    <input type="tel" required placeholder="Phone Number" className="w-full px-4 py-3 rounded-lg border border-neutral-200 focus:border-secondary outline-none transition-colors" />
-                                </div>
-                                <div>
-                                    <select className="w-full px-4 py-3 rounded-lg border border-neutral-200 focus:border-secondary outline-none transition-colors text-neutral-600">
-                                        <option value="">Select Interested Country</option>
-                                        <option>Germany</option>
-                                        <option>France</option>
-                                        <option>Poland</option>
-                                        <option>Others</option>
-                                    </select>
-                                </div>
-                                <button type="submit" className="w-full py-3 bg-secondary hover:bg-secondary-dark text-white font-bold uppercase tracking-wide rounded-lg transition-colors shadow-md">
-                                    Request Call Back
+                            <form onSubmit={handleSubmit} className="space-y-5">
+                                <input
+                                    type="text"
+                                    placeholder="Your Name"
+                                    className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange dark:focus:ring-orange focus:border-orange outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                    required
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Your Email"
+                                    className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange dark:focus:ring-orange focus:border-orange outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                    required
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Phone Number"
+                                    className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange dark:focus:ring-orange focus:border-orange outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400"
+                                    required
+                                />
+                                <select
+                                    className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-orange dark:focus:ring-orange focus:border-orange outline-none transition-all text-slate-900 dark:text-white appearance-none cursor-pointer"
+                                    required
+                                >
+                                    <option value="">Select Destination</option>
+                                    <option value="germany">Germany</option>
+                                    <option value="poland">Poland</option>
+                                    <option value="france">France</option>
+                                    <option value="czech">Czech Republic</option>
+                                    <option value="romania">Romania</option>
+                                </select>
+                                <button
+                                    type="submit"
+                                    className="w-full brand-gradient text-white font-semibold py-4 rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                >
+                                    Get Free Consultation
                                 </button>
-                                <p className="text-xs text-center text-neutral-400 mt-4">We respect your privacy. No spam.</p>
                             </form>
-                        )}
-                    </div>
-                </motion.div>
-            </motion.div>
+                        </div>
+                    </motion.div>
+                </>
+            )}
         </AnimatePresence>
     );
 };

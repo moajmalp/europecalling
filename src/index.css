@@ -1,33 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Colors */
-  --color-primary-light: #F8FAFC;
-  /* Slate-50 */
-  --color-primary-dark: #0F172A;
-  /* Slate-900 */
+  /* Premium Brand Color Palette */
+  --color-primary-light: #FAF4E8;
+  /* Premium cream background */
+  --color-primary-dark: #1A1A1A;
+  /* Deep charcoal */
 
-  --color-accent-light: #D4AF37;
-  /* Metallic Gold */
-  --color-accent-dark: #C5A059;
-  /* Muted Gold */
+  --color-accent-light: #FF9933;
+  /* Vibrant orange accent */
+  --color-accent-dark: #FF8C1A;
+  /* Bright orange for dark mode */
 
   --color-surface-light: #FFFFFF;
-  --color-surface-dark: #1E293B;
-  /* Slate-800 */
+  --color-surface-dark: #2A2A2A;
+  /* Soft dark */
 
-  --color-text-light: #1E293B;
-  --color-text-dark: #F1F5F9;
+  --color-text-light: #2A2A2A;
+  --color-text-dark: #F5F5F5;
 
-  /* Fonts */
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Manrope", sans-serif;
+  --color-cream: #FAF4E8;
+  /* Premium cream accent */
+  --color-orange: #FF9933;
+  /* Brand orange */
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Animations */
   --animate-fade-in: fade-in 0.6s ease-out;
   --animate-slide-up: slide-up 0.8s ease-out;
-  --animate-slow-pan: slow-pan 20s linear infinite;
+  --animate-float: float 3s ease-in-out infinite;
 
   @keyframes fade-in {
     from {
@@ -51,33 +55,43 @@
     }
   }
 
-  @keyframes slow-pan {
-    0% {
-      background-position: 0% 50%;
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
     }
 
     50% {
-      background-position: 100% 50%;
-    }
-
-    100% {
-      background-position: 0% 50%;
+      transform: translateY(-10px);
     }
   }
 }
 
-/* Custom Utilities for Glassmorphism */
+/* Custom Utilities */
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-lg dark:bg-slate-900/70 dark:border-slate-700/30;
+    @apply bg-white/80 backdrop-blur-xl border border-slate-200/60 shadow-lg dark:bg-slate-900/80 dark:border-slate-700/40;
   }
 
   .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-slate-200/50 shadow-sm hover:shadow-xl transition-all duration-300 dark:bg-slate-800/80 dark:border-slate-700/50;
+    @apply bg-white/90 backdrop-blur-md border border-slate-200/50 shadow-sm hover:shadow-2xl transition-all duration-300 dark:bg-slate-800/90 dark:border-slate-700/50;
   }
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  .premium-shadow {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  .premium-shadow-dark {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .brand-gradient {
+    background: linear-gradient(135deg, #FF9933 0%, #FF8C1A 100%);
   }
 }
 
@@ -88,7 +102,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
+    @apply font-sans antialiased bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
   }
 
   h1,
@@ -97,6 +111,6 @@
   h4,
   h5,
   h6 {
-    @apply font-serif tracking-tight;
+    @apply font-sans tracking-tight;
   }
 }
